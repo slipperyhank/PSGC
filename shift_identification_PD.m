@@ -14,9 +14,6 @@ function [N1,c] = shift_identification_PD(P, alpha)
 % Unwrap the phase if not already done
 P = unwrap(P);
 
-% Number of time points
-N = length(P);
-
 % Estimate phase derivative and subtract mean
 dP = (P(3:end) - P(1:(end - 2))) / 2;
 dP = dP - mean(dP);
@@ -37,6 +34,7 @@ while 1==1
     c = sigma * crit;
 end
 
+% Pad with zeros to match original input size
 ind = [0, ind, 0];
 dP = [0, dP, 0];
 
