@@ -22,7 +22,7 @@ for M=1:nM;
      % Calculate likelihood and parameter estimates for each
      % channel
      for c = 1:nChan
-         [Likelihood, Gamma]=PSGC_noIC(dN(c, :), H);
+         [Likelihood, Gamma]=PSGC_noIC(dN(c, (M * W +1):end), H((M * W + 1):end, :));
          % If this likelihood is better than all previous, update the AIC,
          % maxM and g
          if 2 * (1 + nChan * M - Likelihood) < AIC(c)
