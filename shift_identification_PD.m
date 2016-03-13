@@ -15,8 +15,14 @@ function [N1,c] = shift_identification_PD(P, alpha)
 P = unwrap(P);
 
 % Estimate phase derivative and subtract mean
+% TODO: Should the mean be subtracted?
+% Ideally there would not be a trend, but there could be
+% Implement a check?
+% Too many shifts will make actual 0 activity look like shifts if detrend
 dP = (P(3:end) - P(1:(end - 2))) / 2;
-dP = dP - mean(dP);
+
+
+
 
 % Critical values is the 1 - alpha / 2 quantile of the Normal distribution
 crit = norminv(1 - alpha / 2);
