@@ -22,7 +22,7 @@ points = zeros(n_channels, n_bins);
 interval = (1:n_bins) * delta;
 
 % Identify points for each channel
-for c = 1:nChan    
+for c = 1:n_channels   
     % Identify latency of phase shift events using phase derivative    
     shift_times = shift_identification_PD(Phase(c, :), alpha);
     % Assign shifts to dN
