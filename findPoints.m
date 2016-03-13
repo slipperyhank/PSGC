@@ -1,5 +1,6 @@
-function [dN]=findPoints(Phase, delta, alpha)
-% Find the phase shift events for each channel in a dataset.
+function [points]=findPoints(Phase, delta, alpha)
+% Find the phase shift events for each channel in a dataset. Time series is
+% binned into equal size bins of size delta.
 % Args:
 %   Phase (array): Instant phase time series for each signal.
 %   delta (int): Temporal resolution. Number of points in each bin.
@@ -8,24 +9,25 @@ function [dN]=findPoints(Phase, delta, alpha)
 % Returns:
 %   dN (array): Bins with phase shift events for each signal.
 
-nChan = size(Phase, 1);
+% Number of channels
+n_channels = size(Phase, 1);
 
-N = size(Phase, 2);
+% Number of bins
+n_bins = floor(size(Phase, 2) / delta);
 
-dN = zeros(nChan, N);
+% Number of events in each bin
+points = zeros(n_channels, n_bins);
 
-%Partition the time series into K bins of length delta
-K=floor(N / delta);
-interval = 1 + (1:K) * delta;
+%Partition the time series into bins of length delta
+interval = (1:n_bins) * delta;
 
+% Identify points for each channel
 for c = 1:nChan    
-    % Identify phase shift events using PD    
-    N1 = shift_identification_PD(Phase(c, :), alpha);
+    % Identify latency of phase shift events using phase derivative    
+    shift_times = shift_identification_PD(Phase(c, :), alpha);
     % Assign shifts to dN
-    dN(1) = sum(N1 < interval(1));
-    for i=2:K
-        dN(i) = sum(N1 < interval(i)) - dN(i-1);
+    points(c, 1) = sum(shift_times < interval(1));
+    for i=2:n_bins
+        points(c, i) = sum(shift_times < interval(i)) - points(c, i-1);
     end
 end
-        
-
