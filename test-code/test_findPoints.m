@@ -17,3 +17,5 @@ delta = 20;
 points = findPoints(phase, delta, alpha);
 
 % There are 5 shifts and they should occur in bins 6, 12, 21, 33, 43
+
+find(points == 1)
