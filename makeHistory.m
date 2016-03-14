@@ -2,12 +2,12 @@ function history = makeHistory(points, bins_per_window, n_window)
 % Create the history matrix for the point process 
 % 
 % Args:
-%   dN (array): Point process of interest
-%   W (int): Size of each history window
-%   M (int): Number of history windows
+%   points (array): Point process of interest
+%   bins_per_window (int): Size of each history window
+%   n_windows (int): Number of history windows for each channel
 %
 % Returns:
-%   H (array): Matrix of point process history
+%   history (array): Matrix of point process history
 
 n_bins = size(points, 2);
 n_channels = size(points, 1);
