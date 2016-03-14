@@ -1,5 +1,5 @@
-function H = makeHistory(dN, W, M)
-% Create the history matrix for the point process dN
+function history = makeHistory(points, bins_per_window, n_window)
+% Create the history matrix for the point process 
 % 
 % Args:
 %   dN (array): Point process of interest
@@ -9,19 +9,21 @@ function H = makeHistory(dN, W, M)
 % Returns:
 %   H (array): Matrix of point process history
 
-K = size(dN, 2);
-nChan = size(dN, 1);
+n_bins = size(points, 2);
+n_channels = size(points, 1);
 
 % Initialize history
-H = zeros(K, (1 + nChan * M));
+history = zeros(n_bins, (1 + n_channels * n_window));
 
 % Intercept term
-H(:, 1) = 1;
+history(:, 1) = 1;
 
-for i = (M * W + 1):K
-    for m = 1:M
-        for c = 1:nChan
-            H(i, 1 + c * (M-1) + m) = sum(dN(c, (i - m * W):(i - 1 - (m - 1) * W)));       
+% First n_window * bins_per_window bins are initial conditions
+for bin = (n_window * bins_per_window + 1):n_bins
+    for window = 1:n_window
+        for channel = 1:n_channels
+            % In the history, windows for each channel are grouped together
+            history(bin, 1 + (channel - 1) * n_window + window) = sum(points(channel, (bin - window * bins_per_window):(bin - 1 - (window - 1) * bins_per_window)));       
         end
     end
 end
