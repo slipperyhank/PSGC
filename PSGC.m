@@ -1,4 +1,4 @@
-function [likelihood, parameters]=PSGC(points, history, bin_time, varargin)
+function [likelihood, parameters, indices]=PSGC(points, history, bin_time, varargin)
 % Numerical solve for the maximum likelihood estimates of a PSGC model 
 % using Newtons method
 %
@@ -21,6 +21,9 @@ if ~iscolumn(points)
     error('points input must be a column vector')
 end
 
+% Original number of parameters
+n_initial_parameters = size(history, 2);
+
 % First remove all parameters that are trivially -Inf
 % i.e., if this event has occured, then the current process will
 % not have an event
@@ -30,6 +33,10 @@ inhibitory_parameters = find(points'*history == 0);
 history(:, inhibitory_parameters) = [];
 history(inhibitory_bins, :) = [];
 points(inhibitory_bins) = [];
+
+% List of non-inhibitory indices for mapping the excitatory indices back to
+% the original index
+index_mapping = setdiff(1:n_initial_parameters, inhibitory_parameters);
 
 % Now remove all parameters taht are trivially +Inf
 % i.e., if this event has occured, the the current process will
@@ -42,6 +49,12 @@ history(:, excitatory_parameters) = [];
 history(excitatory_bins, :) = [];
 points(excitatory_bins) = [];
 
+% Create a final list of inhibitory, excitatory and estimated indices
+inhibitory_indices = inhibitory_parameters;
+excitatory_indices = index_mapping(excitatory_parameters);
+estimated_indices = setdiff(index_mapping, excitatory_indices);
+indices = {inhibitory_indices, excitatory_indices, estimated_indices};
+
 % Flag for determining recursion or model fit error or no problems
 flag=0;
 
@@ -51,7 +64,7 @@ epsilon=0.00001;
 % number of segments
 n_bins = length(points);
 
-%number of parameters
+% number of parameters to estimate
 n_parameters = size(history, 2);
 
 %Initialize output
@@ -111,7 +124,7 @@ while 1 == 1
     F
     J
     dX = J \ F
-    X = X + dX / 200
+    X = X + dX / 5
     % If any of the parameters are below -10, go to recursion step
     if min(X) < -100
         %Bad = X < -10;
