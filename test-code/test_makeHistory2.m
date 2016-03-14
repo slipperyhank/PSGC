@@ -7,7 +7,7 @@ phase1 = (0.1) * sin(2 * pi * t / n_points);
 phase2 = phase1;
 
 shifts1 = [12, 54, 66];
-shifts2 = [16, 61, 72];
+shifts2 = [16, 42, 72];
 
 n_shifts = length(shifts1);
 
@@ -26,7 +26,7 @@ points = findPoints(phase, bin_size, alpha);
 
 % There are 3 for each channel 
 % For channel one they should occur in bins 3, 11, 14
-% For channel two they should occur in bins 4, 13, 15
+% For channel two they should occur in bins 4, 9, 15
 
 find(points(1, :) == 1)
 find(points(2, :) == 1)
@@ -39,12 +39,12 @@ history = makeHistory(points, bins_per_window, n_windows);
 % The first column is an intercept
 % In the second column, there should be ones at (4, 12, 15)
 % In the third column, there should be ones at (5, 13, 16)
-% In the fourth column, there should be ones at (5, 14, 16)
-% In the fifth column, there should be ones at (6, 15, 17)
+% In the fourth column, there should be ones at (5, 10, 16)
+% In the fifth column, there should be ones at (6, 11, 17)
  
 isequal(sum(history(:, 1)), n_bins)
 isequal(find(history(:, 2) == 1), [4; 12; 15])
 isequal(find(history(:, 3) == 1), [5; 13; 16])
-isequal(find(history(:, 4) == 1), [5; 14; 16])
-isequal(find(history(:, 5) == 1), [6; 15; 17])
+isequal(find(history(:, 4) == 1), [5; 10; 16])
+isequal(find(history(:, 5) == 1), [6; 11; 17])
 
