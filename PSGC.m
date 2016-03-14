@@ -1,4 +1,4 @@
-function [likelihood, final_parameters, indices]=PSGC(points, history, varargin)
+function [likelihood, final_parameters]=PSGC(points, history, varargin)
 % Numerical solve for the maximum likelihood estimates of a PSGC model 
 % using Newtons method
 %
@@ -83,11 +83,11 @@ history(:, excitatory_parameters) = [];
 history(excitatory_bins, :) = [];
 points(excitatory_bins) = [];
 
-% Create a final list of inhibitory, excitatory and estimated indices
+% Create a final list of inhibitory, excitatory and estimated indices to
+% format final parameter
 inhibitory_indices = inhibitory_parameters;
 excitatory_indices = index_mapping(excitatory_parameters);
 estimated_indices = setdiff(index_mapping, excitatory_indices);
-indices = {inhibitory_indices, excitatory_indices, estimated_indices};
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Numerical optimization parameters
@@ -171,8 +171,7 @@ if flag == 0
     final_parameters(excitatory_indices) = Inf;
 elseif step_size > min_step_size
     % flag set - try with smaller step size until below minimum
-    flag
-    [likelihood, final_parameters, indices] = PSGC(initial_points, initial_history, initial_conditions, step_size / 2);
+    [likelihood, final_parameters] = PSGC(initial_points, initial_history, initial_conditions, step_size / 2);
 else
     error('Error: Model does not converge. Possible inhibitory or excitatory parameter')
 end
