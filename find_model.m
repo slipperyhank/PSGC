@@ -13,18 +13,22 @@ function [model_order, best_parameters, AIC] = find_model(points, bins_per_windo
 % Initialize model order, maximum likelihood and parameters values
 n_channels = size(points, 1);
 model_order = zeros(1, n_channels);
-AIC = zeros(1, n_channels);
+AIC = zeros(1, n_channels) + Inf;
 best_parameters = cell(1, n_channels);
 
-for n_windows = 1:max_windows;
-    n_windows
-    % Calculate H for each channel
-    history = makeHistory(points, bins_per_window, n_windows);
+for n_windows = 0:max_windows;
+    % Calculate history for this value of n_windows
+    history = make_history(points, bins_per_window, n_windows);
+    n_parameters = size(history, 2);
     % Calculate likelihood and parameter estimates for each
     % channel
     for channel = 1:n_channels
-        channel
-        [likelihood, parameters] = fit_model(points(channel, (n_windows * bins_per_window +1):end), history((n_windows * bins_per_window + 1):end, :));
+        try
+            [likelihood, parameters] = fit_model(points(channel, (n_windows * bins_per_window +1):end), history((n_windows * bins_per_window + 1):end, :));
+        catch
+            likelihood = 0;
+            parameters = zeros(1, n_parameters);
+        end
         % If this likelihood is greater than all previous, update the AIC,
         % model_order and best_parameters
         if 2 * (1 + n_channels * n_windows - likelihood) < AIC(channel)
