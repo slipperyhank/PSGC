@@ -19,7 +19,7 @@ for i=1:20
     p_event = i / 40;
     points = rand(n_channels, n_points);
     points = points < p_event;
-    history = makeHistory(points, bins_per_window, n_window);
+    history = make_history(points, bins_per_window, n_window);
     likelihood = zeros(1, n_channels);
     for channel = 1:n_channels
         try

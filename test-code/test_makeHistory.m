@@ -22,7 +22,7 @@ alpha = 0.05;
 bin_size = 5;
 n_bins = floor(n_points / bin_size);
 
-points = findPoints(phase, bin_size, alpha);
+points = find_points(phase, bin_size, alpha);
 
 % There are 3 for each channel 
 % For channel one they should occur in bins 3, 11, 14
@@ -34,7 +34,7 @@ find(points(2, :) == 1)
 bins_per_window = 1;
 n_windows = 2;
 
-history = makeHistory(points, bins_per_window, n_windows);
+history = make_history(points, bins_per_window, n_windows);
 
 % The first column is an intercept
 % In the second column, there should be ones at (4, 12, 15)
