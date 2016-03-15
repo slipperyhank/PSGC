@@ -23,7 +23,7 @@ for i=1:20
     likelihood = zeros(1, n_channels);
     for channel = 1:n_channels
         try
-            [likelihood(channel), final_parameters] = PSGC(points(channel, :), history);
+            [likelihood(channel), final_parameters] = fit_model(points(channel, :), history);
         catch
             likelihood(channel) = 0;
         end

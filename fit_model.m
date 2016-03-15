@@ -1,4 +1,4 @@
-function [likelihood, final_parameters]=PSGC(points, history, varargin)
+function [likelihood, final_parameters]=fit_model(points, history, varargin)
 % Numerical solve for the maximum likelihood estimates of a PSGC model 
 % using Newtons method
 %
