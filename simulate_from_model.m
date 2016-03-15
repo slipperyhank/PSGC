@@ -1,13 +1,15 @@
 function [points, history] = simulate_from_model(parameter_cell, n_bins, n_windows, bins_per_window)
-% Simulate from the binomial approximation to the Poisson model with CIF 
+% Simulate from the binomial approximation to a Poisson model with CIF 
 %
 % Args: 
 %   n_windows (int): The number of history windows to be used
 %   bins_per_window (int): Number of bins per history window
-%   parameters (array(float)): The parameters of the fit model
+%   parameters (cell(array(float))): The parameters of the fit model. Each
+%   cell entry is the parameter set for a specific channel
 
 % Returns:
-%   points (float): The simulated point process
+%   points (array(int)): The simulated point process for each channel
+%   history (array(int)): The corresponding history values
 
 
 % need to set M and gamma for the specific Model
@@ -15,7 +17,7 @@ function [points, history] = simulate_from_model(parameter_cell, n_bins, n_windo
 n_parameters = length(parameter_cell{1});
 n_channels = (n_parameters - 1) / n_windows;
 
-if ~isint(n_channels)
+if ~rem(n_channels, 1) == 0 
     error('Wrong parameter structure')
 end
 
@@ -35,7 +37,7 @@ end
 for bin = (n_windows * bins_per_window + 1):n_bins
    for channel = 1:n_channels
        for window = 1:n_windows
-           history(bin, 1 + (channel - 1) * n_window + window) = sum(points(channel, (bin - window * bins_per_window):(bin - 1 - (window - 1) * bins_per_window)));
+           history(bin, 1 + (channel - 1) * n_windows + window) = sum(points(channel, (bin - window * bins_per_window):(bin - 1 - (window - 1) * bins_per_window)));
        end
    end
    for channel = 1:n_channels
