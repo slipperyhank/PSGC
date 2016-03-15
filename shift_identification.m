@@ -1,6 +1,6 @@
-function [N1,c] = shift_identification_PD(P, alpha)
+function [N1,c] = shift_identification(P, alpha)
 % Identify the phase shift events in a time series
-% of phase values.
+% of phase values using the phase derivative approach.
 %
 % Args:
 %   P (array) - time series of phase values
