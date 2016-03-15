@@ -202,7 +202,7 @@ if flag == 0
     final_parameters(excitatory_indices) = Inf;
 elseif step_size > min_step_size
     % flag set - try with smaller step size until below minimum
-    [likelihood, final_parameters] = PSGC(initial_points, initial_history, initial_conditions, step_size / 2);
+    [likelihood, final_parameters] = fit_model(initial_points, initial_history, initial_conditions, step_size / 2);
 else
     error('Error: Model does not converge. Possile that events are too likely.')
 end
