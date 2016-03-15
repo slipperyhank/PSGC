@@ -58,30 +58,61 @@ if ~iscolumn(initial_conditions)
     error('initial conditions must be a column vector')
 end
 
-% First remove all parameters that are trivially -Inf
-% i.e., if this event has occured, then the current process will
-% not have an event
-inhibitory_parameters = find(points'*history == 0);
-[inhibitory_bins, ~] = find(history(:, inhibitory_parameters) == 1);
+% Initialize parameter exclusion
+excluded_indices = [];
+index_mapping = 1:n_initial_parameters;
 
-history(:, inhibitory_parameters) = [];
-history(inhibitory_bins, :) = [];
-points(inhibitory_bins) = [];
+% TODO: Test
+while 1==1
+    % Identify all inhibitory parameters and corresponding 'dead' bins
+    % i.e., if this event has occured, then the current process will
+    % not have an event
+    inhibitory_parameters = find(points'*history == 0);
+    [inhibitory_bins, ~] = find(history(:, inhibitory_parameters) == 1);
+    
+    % Remove inhibitory parameters and corresponding bins
+    history(:, inhibitory_parameters) = [];
+    history(inhibitory_bins, :) = [];
+    points(inhibitory_bins) = [];
+    
+    % Map parameters to original indices
+    inhibitory_indices = index_mapping(inhibitory_parameters);
+    
+    % Update list of excluded parameters
+    excluded_indices = union(excluded_indices, inhibitory_indices);
+    
+    % Update mapping 
+    index_mapping = setdiff(1:n_initial_parameters, excluded_indices);
+    
+    % Identify excitatory parameters and corresponding 'dead' bins
+    % i.e., if this event has occured, the the current process will
+    % definitely have an event.
+    excitatory_parameters = find(points'*history == sum(history));
+    [excitatory_bins, ~] = find(history(:, excitatory_parameters) == 1);
+    
+    % Remove excitatory parameters and corresponding bins
+    history(:, excitatory_parameters) = [];
+    history(excitatory_bins, :) = [];
+    points(excitatory_bins) = [];
+    
+    % Map parameters to original indices
+    excitatory_indices = index_mapping(excitatory_parameters);
+    
+    % Update list of excluded parameters
+    excluded_indices = union(excluded_indices, excitatory_indices);
+    
+    % Update mapping
+    index_mapping = setdiff(1:n_initial_parameters, excluded_indices);
+    
+    % If no excitatory parameters found, break from loop
+    if isempty(excitatory_parameters)
+        break
+    end
+end
 
-% List of non-inhibitory indices for mapping the excitatory indices back to
-% the original index
-index_mapping = setdiff(1:n_initial_parameters, inhibitory_parameters);
-
-% Now remove all parameters taht are trivially +Inf
-% i.e., if this event has occured, the the current process will
-% definitely have an event.
-
-excitatory_parameters = find(points'*history == sum(history));
-[excitatory_bins, ~] = find(history(:, excitatory_parameters) == 1);
-
-history(:, excitatory_parameters) = [];
-history(excitatory_bins, :) = [];
-points(excitatory_bins) = [];
+if sum(points'*history == 0) > 0
+    error('Inhibitory parameter missed')
+end
 
 % Create a final list of inhibitory, excitatory and estimated indices to
 % format final parameter
@@ -173,6 +204,6 @@ elseif step_size > min_step_size
     % flag set - try with smaller step size until below minimum
     [likelihood, final_parameters] = PSGC(initial_points, initial_history, initial_conditions, step_size / 2);
 else
-    error('Error: Model does not converge. Possible inhibitory or excitatory parameter')
+    error('Error: Model does not converge. Possile that events are too likely.')
 end
 
