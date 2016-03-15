@@ -1,4 +1,4 @@
-function [points]=findPoints(Phase, bin_width, alpha)
+function [points]=find_points(Phase, bin_width, alpha)
 % Find the phase shift events for each channel in a dataset. Time series is
 % binned into equal size bins of size delta.
 % Args:

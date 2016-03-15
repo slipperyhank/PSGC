@@ -1,4 +1,4 @@
-function history = makeHistory(points, bins_per_window, n_window)
+function history = make_history(points, bins_per_window, n_window)
 % Create the history matrix for the point process 
 % 
 % Args:
