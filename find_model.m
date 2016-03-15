@@ -1,4 +1,4 @@
-function [model_order, best_parameters, AIC] = findModel(points, bins_per_window, max_windows)
+function [model_order, best_parameters, AIC] = find_model(points, bins_per_window, max_windows)
 % Find the model order for each channel
 % Args:
 %   points (array): The number of shifts in each bin
