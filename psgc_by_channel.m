@@ -28,11 +28,10 @@ if nargin < 4
     [likelihood, parameters] = fit_model(points, history); 
 elseif nargin == 4
     parameters = varargin{1};
-    lambda = zeros(1, n_bins);
-    for bin = 1:n_bins
-        lambda(bin) = exp(sum(parameters' .* history(bin,:))); 
+    if ~iscolumn(parameters)
+        parameters = parameters';
     end
-    likelihood = sum((points .* log(lambda) + (1 - points) .* log(1 - lambda)));
+    [likelihood, ~] = fit_model(points, history, parameters); 
 else
     error('Must be at least 2 inputs. Option input is estiamted parameters of full model')
 end
