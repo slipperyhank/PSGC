@@ -193,7 +193,7 @@ end
 % flag=0: No errors, calculate output
 if flag == 0
     for bin = 1:n_bins
-        lambda(bin) = exp(sum(parameters' .* history(bin,:))); 
+        lambda(bin) = exp(sum(parameters' .* history(bin, :))); 
     end
     likelihood = sum((points .* log(lambda) + (1 - points) .* log(1 - lambda)));
     final_parameters = zeros(1, n_initial_parameters);

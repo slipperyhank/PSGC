@@ -12,9 +12,9 @@ for i=1:n_shifts
 end
 
 alpha = 0.05;
-delta = 20;
+points_per_bin = 20;
 
-points = find_points(phase, delta, alpha);
+points = find_points(phase, points_per_bin, alpha);
 
 % There are 5 shifts and they should occur in bins 6, 12, 21, 33, 43
 
