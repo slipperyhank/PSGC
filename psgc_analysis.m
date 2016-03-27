@@ -34,7 +34,7 @@ for channel = 1:n_channels
 end
 
 % Identify optimal model order for each channel
-[model_order, parameter_estimates] = find_model(point_process, bins_per_window, max_windows);
+[model_order, parameter_estimates] = find_model(point_process, break_index, bins_per_window, max_windows);
 
 % Perform likelihood ratio tests
 pval_matrix = zeros(n_channels);

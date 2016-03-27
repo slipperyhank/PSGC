@@ -32,8 +32,8 @@ pointer = 1;
 for segment = 1:n_segments 
     if bins_per_segment(segment) > 0
         segment_history = make_history(initial_points(:, break_index(segment):(break_index(segment + 1) - 1)), bins_per_window, n_windows);
-        segment_history(1:burn, :) = [];
-        segment_points = points(:, (break_index(segment) + burn_length):(break_index(segment + 1) - 1));
+        segment_history(1:burn_length, :) = [];
+        segment_points = initial_points(:, (break_index(segment) + burn_length):(break_index(segment + 1) - 1));
         points(:, pointer : pointer + bins_per_segment - 1) = segment_points;
         history(pointer:pointer + bins_per_segment - 1, :) = segment_history;
     end

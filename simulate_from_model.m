@@ -1,4 +1,4 @@
-function [points, history] = simulate_from_model(parameter_cell, n_bins, n_windows, bins_per_window)
+function [points, history] = simulate_from_model(parameter_cell, n_bins, n_windows, bins_per_window, varargin)
 % Simulate from the binomial approximation to a Poisson model with CIF 
 %
 % Args: 
@@ -14,6 +14,13 @@ function [points, history] = simulate_from_model(parameter_cell, n_bins, n_windo
 
 % need to set M and gamma for the specific Model
 % Use max M in the head, and then zero out other parameters
+
+if nargin == 5
+    to_burn = varargin{1};
+else
+    to_burn = 0;
+end
+
 n_parameters = length(parameter_cell{1});
 n_channels = (n_parameters - 1) / n_windows;
 
@@ -46,5 +53,11 @@ for bin = (n_windows * bins_per_window + 1):n_bins
            points(channel, bin) = 1;
        end
    end
+end
+
+if to_burn == 1
+    burn_length = n_windows * bins_per_window;
+    points(:, 1:burn_length) = [];
+    history(1:burn_length, :) = [];
 end
   
