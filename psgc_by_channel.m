@@ -16,7 +16,6 @@ function [pvalues, statistics, reduced_likelihood] = psgc_by_channel(points, his
 %   statistics (array(float)): Chi^2 values for likelihood ratio test
 %   reduced_likelihood (array(float)): Likelihood value of reduced models
 
-n_bins = length(points);
 n_parameters = size(history, 2);
 n_channels = (n_parameters - 1) / n_windows;
 

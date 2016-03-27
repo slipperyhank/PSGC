@@ -1,4 +1,4 @@
-function [model_order, best_parameters, AIC] = find_model(points, bins_per_window, max_windows)
+function [model_order, best_parameters, AIC] = find_model(point_process, break_index, bins_per_window, max_windows)
 % Find the model order for each channel
 % Args:
 %   points (array): The number of shifts in each bin
@@ -11,14 +11,14 @@ function [model_order, best_parameters, AIC] = find_model(points, bins_per_windo
     
 
 % Initialize model order, maximum likelihood and parameters values
-n_channels = size(points, 1);
+n_channels = size(point_process, 1);
 model_order = zeros(1, n_channels);
 AIC = zeros(1, n_channels) + Inf;
 best_parameters = cell(1, n_channels);
 
 for n_windows = 0:max_windows;
     % Calculate history for this value of n_windows
-    history = make_history(points, bins_per_window, n_windows);
+    [points, history] = burn_and_concatenate(point_process, break_index, bins_per_window, n_windows);
     n_parameters = size(history, 2);
     % Calculate likelihood and parameter estimates for each
     % channel

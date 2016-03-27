@@ -1,4 +1,4 @@
-function [pval_matrix, parameter_estimates, model_order] = psgc_analysis(data, frequency_band, sampling_rate, points_per_bin, bins_per_window, max_windows, alpha)
+function [pval_matrix, parameter_estimates, model_order] = psgc_analysis(data, break_index, frequency_band, sampling_rate, points_per_bin, bins_per_window, max_windows, alpha)
 % Perform phase shift granger causality on set of signals.
 %
 % Args: 
@@ -40,8 +40,8 @@ end
 pval_matrix = zeros(n_channels);
 for channel = 1:n_channels
     if model_order(channel) > 0
-        history = make_history(point_process, bins_per_window, model_order(channel));
-        pval_matrix(channel, :) = psgc_by_channel(point_process(channel, :), history, model_order(channel), parameter_estimates{channel});
+        [points, history] = burn_and_concatenate(point_process, break_index, bins_per_window, model_order(channel));
+        pval_matrix(channel, :) = psgc_by_channel(points(channel, :), history, model_order(channel), parameter_estimates{channel});
     else
         pval_matrix(channel, :) = 1;
     end
