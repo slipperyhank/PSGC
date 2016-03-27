@@ -1,4 +1,4 @@
-function [pval_matrix, parameter_estimates, model_order] = psgc_analysis(data, frequency_band, sampling_rate, points_per_bin, bins_per_window, max_windows)
+function [pval_matrix, parameter_estimates, model_order] = psgc_analysis(data, frequency_band, sampling_rate, points_per_bin, bins_per_window, max_windows, alpha)
 % Perform phase shift granger causality on set of signals.
 %
 % Args: 
@@ -16,8 +16,7 @@ n_channels = size(data, 1);
 n_points = size(data, 2);
 n_bins = floor(n_points / points_per_bin);
 
-% TODO - make threshold value an optional parameter
-alpha = 0.05;
+
 
 % Find frequency band centre and width
 band_centre = (frequency_band(2) + frequency_band(1)) / 2;
