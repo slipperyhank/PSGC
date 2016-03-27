@@ -15,7 +15,7 @@ n_bins = 10000;
 bins_per_window = 5;
 n_windows = 2;
 p_event = 0.005;
-max_windows = 3;
+possible_models = 0:3;
 to_burn = 0;
 break_index = 1;
 % First two independent processes
@@ -32,7 +32,7 @@ AIC = zeros(n_iterations, n_channels);
 for iteration = 1:n_iterations
     iteration
     [points] = simulate_from_model(model_parameters, n_bins, n_windows, bins_per_window, to_burn);
-    [model_order(iteration, :), parameters{iteration}, AIC(iteration, :)] = find_model(points, break_index, bins_per_window, max_windows);
+    [model_order(iteration, :), parameters{iteration}, AIC(iteration, :)] = find_model(points, break_index, bins_per_window, possible_models);
 end
     
 % Model order estimate is good - all correct in 5 iterations.
@@ -54,7 +54,7 @@ AIC = zeros(n_iterations, n_channels);
 for iteration = 1:n_iterations
     iteration
     [points] = simulate_from_model(model_parameters, n_bins, n_windows, bins_per_window, to_burn);
-    [model_order(iteration, :), parameters{iteration}, AIC(iteration, :)] = find_model(points, break_index, bins_per_window, max_windows);
+    [model_order(iteration, :), parameters{iteration}, AIC(iteration, :)] = find_model(points, break_index, bins_per_window, possible_models);
 end
 
 % With n_bins = 10000, and n_iterations = 10, average error is 0.5 and

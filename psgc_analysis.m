@@ -1,4 +1,4 @@
-function [pval_matrix, parameter_estimates, model_order] = psgc_analysis(data, break_index, frequency_band, sampling_rate, points_per_bin, bins_per_window, max_windows, alpha)
+function [pval_matrix, parameter_estimates, model_order] = psgc_analysis(data, break_index, frequency_band, sampling_rate, points_per_bin, bins_per_window, possible_models, alpha)
 % Perform phase shift granger causality on set of signals.
 %
 % Args: 
@@ -34,7 +34,11 @@ for channel = 1:n_channels
 end
 
 % Identify optimal model order for each channel
-[model_order, parameter_estimates] = find_model(point_process, break_index, bins_per_window, max_windows);
+if length(possible_models == 1)
+    model_order = zeros(1, n_channels) + possible_models;
+else
+    [model_order, parameter_estimates] = find_model(point_process, break_index, bins_per_window, max_windows);
+end
 
 % Perform likelihood ratio tests
 pval_matrix = zeros(n_channels);
