@@ -22,6 +22,8 @@ max_windows = 3;
 shift_magnitude = 2;
 alpha = 0.01;
 signal2noise_ratio = 0.5;
+to_burn = 0;
+break_index = 1;
 
 data = zeros(n_channels, n_points);
 
@@ -42,7 +44,7 @@ n_failed = 0;
 
 for iteration = 1:n_iterations
     iteration
-    [points, history] = simulate_from_model(model_parameters, n_bins, n_windows, bins_per_window);
+    [points, history] = simulate_from_model(model_parameters, n_bins, n_windows, bins_per_window, to_burn);
     for channel = 1:n_channels
         shift_index = find(points(channel, :) == 1) * points_per_bin;
         phase = zeros(1, n_points);
@@ -55,7 +57,7 @@ for iteration = 1:n_iterations
         data(channel, :) = signal2noise_ratio * data(channel, :) + (1 - signal2noise_ratio) * noise;
     end
     try
-        [pval_matrix, parameter_estimates, model_order] = psgc_analysis(data, frequency_band, sampling_rate, points_per_bin, bins_per_window, max_windows, alpha);
+        [pval_matrix, parameter_estimates, model_order] = psgc_analysis(data, break_index, frequency_band, sampling_rate, points_per_bin, bins_per_window, max_windows, alpha);
     catch
         n_failed = n_failed + 1;
         pval_matrix = zeros(n_channels);

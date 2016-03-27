@@ -14,6 +14,7 @@ n_bins = 50000;
 bins_per_window = 5;
 n_windows = 2;
 p_event = 0.005;
+to_burn = 1;
 
 % First two independent processes
 channel1_parameters = [log(p_event), 0, 0, 0, 0];
@@ -31,7 +32,7 @@ end
 
 % Simulate process and history
 for iteration = 1:n_iterations
-    [points, history] = simulate_from_model(model_parameters, n_bins, n_windows, bins_per_window);
+    [points, history] = simulate_from_model(model_parameters, n_bins, n_windows, bins_per_window, to_burn);
     for channel = 1:n_channels
         [likelihood(channel), parameters{iteration, channel}] = fit_model(points(channel, :), history);
     end
@@ -54,7 +55,7 @@ channel1_parameters = [log(p_event), 0, 0, 0, 0];
 channel2_parameters = [log(p_event), 2, -1, 0, 0];
 model_parameters = {channel1_parameters, channel2_parameters};
 n_parameters = length(channel1_parameters);
-n_iterations = 50;
+n_iterations = 5;
 parameters = cell(n_iterations, n_channels);
 likelihood = zeros(1, n_channels);
 estimated_parameters = cell(1, n_channels);
@@ -110,5 +111,6 @@ end
 % signals in the data when none exist in the model. Should happen less with
 % more data points. 
 
-
+% This bias appear to have dimenished after baseline bins burned away
+% TODO: recheck the above more thoroughly 
 

@@ -14,7 +14,7 @@ n_bins = 10000;
 bins_per_window = 5;
 n_windows = 2;
 p_event = 0.005;
-
+to_burn = 1;
 
 % Events in channel 1 excite channel 2 in the 6-10 bin lag 
 
@@ -56,7 +56,7 @@ pvalues = zeros(1, n_channels);
 
 for iteration = 1:n_iterations
     iteration
-    [points, history] = simulate_from_model(model_parameters, n_bins, n_windows, bins_per_window);
+    [points, history] = simulate_from_model(model_parameters, n_bins, n_windows, bins_per_window, to_burn);
     try
         [pvalues(iteration, :)] = psgc_by_channel(points(2, :), history, n_windows);
     catch

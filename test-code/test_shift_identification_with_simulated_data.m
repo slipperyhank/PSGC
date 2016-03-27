@@ -32,7 +32,7 @@ model_parameters = {channel1_parameters, channel2_parameters};
 phase = zeros(n_channels, n_points);
 
 for iteration = 1:n_iterations
-    [point_process, history] = simulate_from_model(model_parameters, n_bins, n_windows, bins_per_window);
+    [point_process] = simulate_from_model(model_parameters, n_bins, n_windows, bins_per_window);
 
     for channel = 1:n_channels
         shift_index = find(point_process(channel, :) == 1) * points_per_bin;
