@@ -29,7 +29,7 @@ for channel = 1:n_channels
     shift_times = change_point_detection(phase(channel, :), alpha);
     % Assign shifts to dN
     points(channel, 1) = sum(shift_times < interval(1));
-    for i=2:n_bins
-        points(channel, i) = sum(shift_times < interval(i)) - sum(shift_times < interval(i-1));
+    for bin = 2:n_bins
+        points(channel, bin) = sum(shift_times < interval(bin)) - sum(shift_times < interval(bin - 1));
     end
 end
