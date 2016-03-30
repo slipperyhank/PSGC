@@ -31,10 +31,10 @@ c = sigma * crit;
 
 % Continue removing shift values and updating the threshold until
 % convergence
-while 1==1
+while 1
     ind = abs(dP) > c;
     sigma = min(std(dP(ind == 0)), sigma);
-    if c == sigma * crit;
+    if abs(c - sigma * crit) < 10^(-6)
         break
     end
     c = sigma * crit;
@@ -51,7 +51,7 @@ nShifts = length(lower);
 
 N1 = zeros(1, nShifts);
 for i=1:nShifts
-    N1(i) = find(abs(dP) == max(abs(dP(lower(i):upper(i)))), 1);
+    N1(i) = lower(i) - 1 + find(abs(dP(lower(i):upper(i))) == max(abs(dP(lower(i):upper(i)))), 1);
 end
 
 
