@@ -28,7 +28,7 @@ for model = 1:n_models;
         try
             [likelihood, parameters] = fit_model(points(channel, (n_windows * bins_per_window +1):end), history((n_windows * bins_per_window + 1):end, :));
         catch
-            likelihood = 0;
+            likelihood = -Inf;
             parameters = zeros(1, n_parameters);
         end
         % If this likelihood is greater than all previous, update the AIC,
