@@ -177,8 +177,8 @@ while 1 == 1
     % prevent parameters from over shooting and jumping outside the support 
     % of the model
     change_in_parameters = J \ F;
-    parameters = parameters + change_in_parameters * step_size; 
-    % If any of the parameters are below -20, set flag 2
+    parameters = parameters + change_in_parameters * step_size;
+    % If any of the parameters are below -10, set flag 2
     % Step size too large, or inhibitory parameter
     if min(parameters) < -10
         flag = 2;
