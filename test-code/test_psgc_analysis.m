@@ -18,7 +18,7 @@ points_per_bin = 4;
 frequency_band = [8, 10];
 frequency = 9;
 n_points = n_bins * points_per_bin;
-max_windows = 3;
+possible_models = [1,3];
 shift_magnitude = 2;
 alpha = 0.01;
 signal2noise_ratio = 0.5;
@@ -35,7 +35,7 @@ channel1_parameters = [log(p_event), -4, 0, 0, 0];
 channel2_parameters = [log(p_event), 0, 2, -6, 0];
 model_parameters = {channel1_parameters, channel2_parameters};
 
-n_iterations = 100;
+n_iterations = 10;
 
 result_psgc = zeros(n_channels);
 result_order = zeros(1, n_channels);
@@ -57,7 +57,7 @@ for iteration = 1:n_iterations
         data(channel, :) = signal2noise_ratio * data(channel, :) + (1 - signal2noise_ratio) * noise;
     end
     try
-        [pval_matrix, parameter_estimates, model_order] = psgc_analysis(data, break_index, frequency_band, sampling_rate, points_per_bin, bins_per_window, max_windows, alpha);
+        [pval_matrix, parameter_estimates, ~, model_order] = psgc_analysis(data, break_index, frequency_band, sampling_rate, points_per_bin, bins_per_window, possible_models, alpha);
     catch
         n_failed = n_failed + 1;
         pval_matrix = zeros(n_channels);
