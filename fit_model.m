@@ -128,7 +128,7 @@ estimated_indices = setdiff(index_mapping, excitatory_indices);
 flag=0;
 % convergence criteria
 epsilon=0.00001;
-min_step_size = 0.01;
+min_step_size = 0.02;
 % number of segments and parameters to estimate
 n_bins = length(points);
 n_parameters = size(history, 2);
