@@ -1,4 +1,4 @@
-function [points] = find_points(phase, points_per_bin, alpha)
+function [points] = find_points(phase, points_per_bin)
 % Find the phase shift events for each channel in a dataset. Time series is
 % binned into equal size bins of size delta.
 % Args:
@@ -10,6 +10,9 @@ function [points] = find_points(phase, points_per_bin, alpha)
 %   points (array): Point process - list of bins with phase shift events 
 %                   for each channel.
 
+
+% Default value used for threshold calculation
+alpha = 0.05;
 
 % Number of channels
 n_channels = size(phase, 1);
