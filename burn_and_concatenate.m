@@ -3,6 +3,8 @@ function [points, history] = burn_and_concatenate(initial_points, bin_boundary_m
 % 
 % Args:
 %   points (array): Point process of interest
+%   bin_boundary_markers (array(int)): Array of bin indices, marking the
+%      start of a new segment. Final value should be n_bins + 1.
 %   bins_per_window (int): Size of each history window
 %   n_windows (int): Number of history windows for each channel
 %
@@ -10,6 +12,11 @@ function [points, history] = burn_and_concatenate(initial_points, bin_boundary_m
 %   points (array, n_channels by n_bins): New point process with initial
 %      values burned away. 
 %   history (array, n_bins by n_parameters): Point process history
+
+% If bin_bounardy_markers does not mark the end of the file, add it
+if bin_boundary_markers(end) ~= size(initial_points, 2) + 1
+    bin_boundary_markers = [bin_boundary_markers, size(initial_points, 2) + 1];
+end
 
 % Initialize from inputs
 n_channels = size(initial_points, 1);
