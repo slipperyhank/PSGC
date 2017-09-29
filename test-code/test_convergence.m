@@ -12,15 +12,16 @@ n_channels = 3;
 n_points = 1000;
 bins_per_window = 2;
 n_window = 2;
+bin_boundary_markers = [1, 1001];
 
 n_iterations = 10;
 n_converge = zeros(1, n_iterations);
 
-for i=1:20
+for i=1:n_iterations
     p_event = i / 40;
     point_process = rand(n_channels, n_points);
     point_process = point_process < p_event;
-    [points, history] = burn_and_concatenate(point_process, 1, bins_per_window, n_window);
+    [points, history] = burn_and_concatenate(point_process, bin_boundary_markers, bins_per_window, n_window);
     likelihood = zeros(1, n_channels);
     for channel = 1:n_channels
         try

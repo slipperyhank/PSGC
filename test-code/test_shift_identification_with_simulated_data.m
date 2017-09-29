@@ -47,7 +47,7 @@ for iteration = 1:n_iterations
         phase(channel, :) = instant_phase(data(channel, :), sampling_rate, band_centre, band_width);
     end
 
-    points = find_points(phase, points_per_bin, alpha);
+    points = find_points(phase, points_per_bin);
 
     true_points_channel1 = find(point_process(1, :) > 0);
     estimated_points_channel1 = find(points(1, :) > 0);

@@ -5,8 +5,8 @@ n_bins = 100;
 n_channels = 2;
 n_windows = 2;
 bins_per_window = 5;
-break_index = [1, 51];
-n_breaks = length(break_index);
+bin_boundary_markers = [1, 51, 101];
+n_segments = length(bin_boundary_markers) - 1;
 
 point_process = zeros(2, n_bins);
 point_process(1, [9, 21, 31, 66, 76, 86]) = 1;
@@ -36,7 +36,7 @@ point_process(2, [4, 26, 46, 56, 61, 71]) = 1;
 
 % For channel two they should occur in bins 4, 13, 15
 
-[points, history] = burn_and_concatenate(point_process, break_index, bins_per_window, n_windows);
+[points, history] = burn_and_concatenate(point_process, bin_boundary_markers, bins_per_window, n_windows);
 
 isequal(find(points(1, :) == 1), [11, 21, 46, 56, 66])
 isequal(find(points(2, :) == 1), [16, 36, 41, 51])
