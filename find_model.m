@@ -1,4 +1,4 @@
-function [best_models, best_parameters, AIC] = find_model(point_process, bin_boundary_markers, bins_per_window, max_model_order)
+function [best_models, best_parameters, AIC] = find_model(point_process, bin_boundary_markers, bins_per_window, maximum_model_order)
 % Find the model order for each channel
 % Args:
 %   point_process (array: n_channel by n_bins): The number of shifts in 
@@ -21,7 +21,7 @@ best_models = zeros(1, n_channels);
 AIC = zeros(1, n_channels) + Inf;
 best_parameters = cell(1, n_channels);
 
-for model_order = 1:max_model_order;
+for model_order = 0:maximum_model_order;
     model_order
     % Calculate history for this value of n_windows
     [points, history] = burn_and_concatenate(point_process, bin_boundary_markers, bins_per_window, model_order);

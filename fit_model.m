@@ -39,7 +39,7 @@ elseif nargin == 4
     initial_conditions = varargin{1};
     step_size = varargin{2};
 else
-    error('Must be at least 2 inputs. Option inputs are initial conditions and step size')
+    error('Must be at least 2 inputs. Optional inputs are initial conditions and step size')
 end
 
 % Input points and initial conditions should be a column vector. 
@@ -133,6 +133,7 @@ min_step_size = 0.02;
 n_bins = length(points);
 n_parameters = size(history, 2);
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Initialize variables
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -151,7 +152,7 @@ lambda = zeros(n_bins, 1);
 % Optimization proceedure
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-while 1 == 1
+while flag==0
     for bin = 1:n_bins
         % Calculate CIF
         lambda(bin) = exp(sum(parameters' .* history(bin, :)));
@@ -189,6 +190,7 @@ while 1 == 1
         break
     end
 end
+
 
 % flag=0: No errors, calculate output
 if flag == 0
