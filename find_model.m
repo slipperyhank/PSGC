@@ -30,7 +30,7 @@ for model_order = 0:maximum_model_order;
     % channel
     for channel = 1:n_channels
         try
-            [likelihood, parameters] = fit_model(points(channel, (model_order * bins_per_window + 1):end), history((model_order * bins_per_window + 1):end, :));
+            [likelihood, parameters] = fit_model(points(channel, :), history);
         catch
             likelihood = -Inf;
             parameters = zeros(1, n_parameters);
